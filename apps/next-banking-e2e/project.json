@@ -1,0 +1,9 @@
+{
+  "name": "next-banking-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/next-banking-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["next-banking"],
+  "// targets": "to see all targets run: nx show project next-banking-e2e --web",
+  "targets": {}
+}
