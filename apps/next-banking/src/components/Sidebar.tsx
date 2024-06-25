@@ -20,7 +20,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
             height={34}
             alt="Wing Bank logo"
             className="size-[24px] max-xl:size-14"
-          ></Image>
+           />
           <h1 className="sidebar-logo">Wing Bank</h1>
         </Link>
         {sidebarLinks.map((link) => {
@@ -41,7 +41,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
                   alt={link.label}
                   fill
                   className={cn({ 'brightness-[3] invert-0': isActive })}
-                ></Image>
+                 />
               </div>
               <p className={cn('sidebar-label', { '!text-white': isActive })}>
                 {link.label}

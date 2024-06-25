@@ -30,6 +30,15 @@
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/javascript"],
       "rules": {}
+    },
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "react/self-closing-comp": [
+          "error",
+          { "component": true, "html": true }
+        ]
+      }
     }
   ]
 }

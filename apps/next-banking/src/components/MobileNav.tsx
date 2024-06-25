@@ -37,7 +37,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
               width={34}
               height={34}
               alt="Wing Bank logo"
-            ></Image>
+             />
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
               Wing Bank
             </h1>
@@ -67,7 +67,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                           className={cn({
                             'brightness-[3] invert-0': isActive,
                           })}
-                        ></Image>
+                         />
                         <p
                           className={cn('text-16 font-semibold text-black-2', {
                             'text-white': isActive,
