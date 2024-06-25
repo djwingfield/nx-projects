@@ -15,7 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@djwingfield/shadcn-ui": ["libs/shared/shadcn/ui/src/index.ts"]
+      "@djwingfield/shadcn-ui": ["libs/shared/shadcn/ui/src/index.ts"],
+      "@djwingfield/shadcn-ui/components": [
+        "libs/shared/shadcn/ui/src/lib/components"
+      ],
+      "@djwingfield/shadcn-util": ["libs/shared/shadcn/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,5 +1,6 @@
 const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
+const shadCnTailwindConfig = require('../../libs/shared/shadcn/ui/src/lib/styles/tailwind.config');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -14,4 +15,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  presets: [shadCnTailwindConfig],
 };
