@@ -2,6 +2,7 @@
 
 import { Button, Form } from '@djwingfield/shadcn-ui';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -16,6 +17,7 @@ const formSchema = z.object({
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -28,7 +30,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
   }
 
   return (
@@ -68,15 +71,26 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 name="email"
                 label="Email"
                 placeholder="Enter your email"
+                type="email"
               />
               <CustomInput
                 formControl={form.control}
                 name="password"
                 label="Password"
                 placeholder="Enter your password"
+                type="password"
               />
-              <Button type="submit" className="form-btn">
-                Submit
+              <Button type="submit" disabled={isLoading} className="form-btn">
+                {isLoading ? (
+                  <>
+                    <Loader2 size={20} className="animate-spin" /> &nbsp;
+                    Loading...
+                  </>
+                ) : type === 'sign-in' ? (
+                  'Sign In'
+                ) : (
+                  'Sign Up'
+                )}
               </Button>
             </form>
           </Form>
