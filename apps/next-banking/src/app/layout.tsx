@@ -6,14 +6,14 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const ibmPlexSerif = IBM_Plex_Serif({
   subsets: ['latin'],
   weight: ['400', '700'],
-  variable: '--font-ibm-',
+  variable: '--font-ibm-plex-serif',
 });
 
 export const metadata: Metadata = {
   title: 'Wing Bank',
   description: 'Wing Bank is a modern banking platform for everyone.',
   icons: {
-    icon: '../../public/icons/logo.svg',
+    icon: '/icons/logo.svg',
   },
 };
 

@@ -2,7 +2,7 @@ const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
 
 /** @type {import('tailwindcss').Config} */
-const defaultConfig = {
+module.exports = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
@@ -10,6 +10,11 @@ const defaultConfig = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
     './constants/**/*.{ts,tsx}',
+    join(
+      __dirname,
+      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
+    ),
+    ...createGlobPatternsForDependencies(__dirname),
   ],
   prefix: '',
   theme: {
@@ -106,20 +111,4 @@ const defaultConfig = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-};
-
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    join(
-      __dirname,
-      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
-    ),
-    ...createGlobPatternsForDependencies(__dirname),
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-  presets: [defaultConfig],
 };
