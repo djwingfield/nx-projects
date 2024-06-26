@@ -10,14 +10,27 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import CustomInput from './CustomInput';
 
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
-});
+const password = () => z.string().min(8);
+
+const getFormSchema = (type) =>
+  z.object({
+    firstName: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
+    lastName: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
+    address1: type === 'sign-up' ? z.string().max(50) : z.string().optional(),
+    city: type === 'sign-up' ? z.string() : z.string().optional(),
+    postCode: type === 'sign-up' ? z.string() : z.string().optional(),
+    dateOfBirth: type === 'sign-up' ? z.string() : z.string().optional(),
+    ssn: type === 'sign-up' ? z.string() : z.string().optional(),
+    email: z.string().email(),
+    password: password(),
+    confirmPassword:
+      type === 'sign-up' ? password().optional() : password().optional(),
+  });
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const formSchema = getFormSchema(type);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,6 +79,59 @@ const AuthForm = ({ type }: AuthFormProps) => {
         <span>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              {type === 'sign-up' && (
+                <>
+                  <div className="flex gap-4">
+                    <CustomInput
+                      formControl={form.control}
+                      name="firstName"
+                      label="First name"
+                      placeholder="Enter your first name"
+                    />
+                    <CustomInput
+                      formControl={form.control}
+                      name="lastName"
+                      label="Last name"
+                      placeholder="Enter your last name"
+                    />
+                  </div>
+                  <CustomInput
+                    formControl={form.control}
+                    name="address1"
+                    label="Address"
+                    placeholder="Enter your specific address"
+                  />
+                  <div className="flex gap-4">
+                    <CustomInput
+                      formControl={form.control}
+                      name="city"
+                      label="City"
+                      placeholder="ex: Nottingham"
+                    />
+                    <CustomInput
+                      formControl={form.control}
+                      name="postCode"
+                      label="Post code"
+                      placeholder="ex: NG1 1NA"
+                    />
+                  </div>
+                  <div className="flex gap-4">
+                    <CustomInput
+                      formControl={form.control}
+                      name="dateOfBirth"
+                      label="Date of birth"
+                      placeholder="DD-MM-YYYY"
+                    />
+                    <CustomInput
+                      formControl={form.control}
+                      name="ssn"
+                      label="SSN"
+                      placeholder="ex: 1234"
+                    />
+                  </div>
+                </>
+              )}
+
               <CustomInput
                 formControl={form.control}
                 name="email"
@@ -80,20 +146,36 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 placeholder="Enter your password"
                 type="password"
               />
-              <Button type="submit" disabled={isLoading} className="form-btn">
-                {isLoading ? (
-                  <>
-                    <Loader2 size={20} className="animate-spin" /> &nbsp;
-                    Loading...
-                  </>
-                ) : type === 'sign-in' ? (
-                  'Sign In'
-                ) : (
-                  'Sign Up'
-                )}
-              </Button>
+              <div className="flex flex-col gap-4">
+                <Button type="submit" disabled={isLoading} className="form-btn">
+                  {isLoading ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin" /> &nbsp;
+                      Loading...
+                    </>
+                  ) : type === 'sign-in' ? (
+                    'Sign In'
+                  ) : (
+                    'Sign Up'
+                  )}
+                </Button>
+              </div>
             </form>
           </Form>
+
+          <footer className="flex justify-center gap-1">
+            <p className="text-14 font-normal text-gray 600">
+              {type === 'sign-in'
+                ? "Don't have an account?"
+                : 'Already have an account'}
+            </p>
+            <Link
+              href={type === 'sign-in' ? '/sign-up' : '/sign-in'}
+              className="form-link"
+            >
+              {type === 'sign-in' ? 'Sign Up' : 'Sign In'}
+            </Link>
+          </footer>
         </span>
       )}
     </section>
