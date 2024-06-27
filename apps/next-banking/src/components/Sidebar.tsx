@@ -1,13 +1,13 @@
 'use client';
 
-import { Button } from '@djwingfield/shadcn-ui';
 import { cn } from '@djwingfield/shadcn-util';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { sidebarLinks } from '../constants';
+import Footer from './Footer';
 
-const Sidebar = ({ user, onLogout }: SiderbarProps) => {
+const Sidebar = ({ user }: SiderbarProps) => {
   const pathName = usePathname();
 
   return (
@@ -23,11 +23,6 @@ const Sidebar = ({ user, onLogout }: SiderbarProps) => {
           />
           <h1 className="sidebar-logo">Wing Bank</h1>
         </Link>
-        <Button onClick={onLogout}>
-          <div className="relative size-6">
-            <Image src="/icons/logout.svg" alt="Logout" fill />
-          </div>
-        </Button>
         {sidebarLinks.map((link) => {
           const isActive =
             pathName === link.route || pathName.startsWith(`${link.route}/`);
@@ -56,7 +51,8 @@ const Sidebar = ({ user, onLogout }: SiderbarProps) => {
         })}
         USER
       </nav>
-      FOOTER
+
+      <Footer user={user} />
     </section>
   );
 };

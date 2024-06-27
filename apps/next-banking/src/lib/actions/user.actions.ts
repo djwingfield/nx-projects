@@ -6,12 +6,16 @@ import { createAdminClient, createSessionClient } from '../appwrite/appwrite';
 import { nextBankAppwriteEnvVars } from '../appwrite/helpers';
 
 export const getLoggedInUser = async () => {
-  const { account } = await createSessionClient(
-    nextBankAppwriteEnvVars.endpoint,
-    nextBankAppwriteEnvVars.projectId,
-    nextBankAppwriteEnvVars.sessionKey
-  );
-  return await account.get();
+  try {
+    const { account } = await createSessionClient(
+      nextBankAppwriteEnvVars.endpoint,
+      nextBankAppwriteEnvVars.projectId,
+      nextBankAppwriteEnvVars.sessionKey
+    );
+    return await account.get();
+  } catch (error) {
+    return undefined;
+  }
 };
 
 export const signIn = async ({ email, password }: signInProps) => {

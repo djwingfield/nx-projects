@@ -11,6 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { sidebarLinks } from '../constants';
+import Footer from './Footer';
 
 const MobileNav = ({ user }: MobileNavProps) => {
   const pathName = usePathname();
@@ -37,7 +38,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
               width={34}
               height={34}
               alt="Wing Bank logo"
-             />
+            />
             <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
               Wing Bank
             </h1>
@@ -67,7 +68,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                           className={cn({
                             'brightness-[3] invert-0': isActive,
                           })}
-                         />
+                        />
                         <p
                           className={cn('text-16 font-semibold text-black-2', {
                             'text-white': isActive,
@@ -82,7 +83,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                 USER
               </nav>
             </SheetClose>
-            FOOTER
+            <Footer user={user} />
           </div>
         </SheetContent>
       </Sheet>
