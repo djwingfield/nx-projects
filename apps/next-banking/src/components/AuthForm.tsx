@@ -5,22 +5,32 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { signIn, signUp } from '../lib/actions/user.actions';
 import CustomInput from './CustomInput';
 
 const password = () => z.string().min(8);
 
 const getFormSchema = (type) =>
   z.object({
-    firstName: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
-    lastName: type === 'sign-up' ? z.string().min(3) : z.string().optional(),
-    address1: type === 'sign-up' ? z.string().max(50) : z.string().optional(),
-    city: type === 'sign-up' ? z.string() : z.string().optional(),
-    postCode: type === 'sign-up' ? z.string() : z.string().optional(),
-    dateOfBirth: type === 'sign-up' ? z.string() : z.string().optional(),
-    ssn: type === 'sign-up' ? z.string() : z.string().optional(),
+    firstName:
+      type === 'sign-up' ? z.string().optional() : z.string().optional(),
+    lastName:
+      type === 'sign-up' ? z.string().optional() : z.string().optional(),
+    address1:
+      type === 'sign-up'
+        ? z.string().max(50).optional()
+        : z.string().optional(),
+    city: type === 'sign-up' ? z.string().optional() : z.string().optional(),
+    state: type === 'sign-up' ? z.string().optional() : z.string().optional(),
+    postCode:
+      type === 'sign-up' ? z.string().optional() : z.string().optional(),
+    dateOfBirth:
+      type === 'sign-up' ? z.string().optional() : z.string().optional(),
+    ssn: type === 'sign-up' ? z.string().optional() : z.string().optional(),
     email: z.string().email(),
     password: password(),
     confirmPassword:
@@ -28,6 +38,7 @@ const getFormSchema = (type) =>
   });
 
 const AuthForm = ({ type }: AuthFormProps) => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const formSchema = getFormSchema(type);
@@ -35,17 +46,31 @@ const AuthForm = ({ type }: AuthFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      firstName: 'Dom',
+      lastName: 'Wingfield',
+      address1: 'Add 1',
+      city: 'City',
+      state: 'State',
+      postCode: 'Post Code',
+      dateOfBirth: 'DOB',
+      ssn: '111222333444',
+      email: 'test@test.com',
+      password: 'test@test.com',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
-  }
+
+    try {
+      type === 'sign-up' ? await signUp(data) : await signIn(data);
+      router.push('/');
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <section className="auth-form">
@@ -101,12 +126,18 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     label="Address"
                     placeholder="Enter your specific address"
                   />
+                  <CustomInput
+                    formControl={form.control}
+                    name="city"
+                    label="City"
+                    placeholder="Enter your city"
+                  />
                   <div className="flex gap-4">
                     <CustomInput
                       formControl={form.control}
-                      name="city"
-                      label="City"
-                      placeholder="ex: Nottingham"
+                      name="state"
+                      label="State"
+                      placeholder="ex: NY"
                     />
                     <CustomInput
                       formControl={form.control}
