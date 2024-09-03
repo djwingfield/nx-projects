@@ -63,8 +63,15 @@ const AuthForm = ({ type }: AuthFormProps) => {
     setIsLoading(true);
 
     try {
-      type === 'sign-up' ? await signUp(data) : await signIn(data);
-      router.push('/');
+      if (type === 'sign-up') {
+        const newUser = await signUp(data);
+        setUser(newUser);
+      }
+
+      if (type === 'sign-in') {
+        await signIn(data);
+        router.push('/');
+      }
     } catch (error) {
       console.log('error', error);
     } finally {
