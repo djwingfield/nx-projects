@@ -16,20 +16,31 @@ interface IAppwriteEnvVars<TCollectionNames extends string> {
   readonly database: IAppwriteDatabaseEnvVars<TCollectionNames>;
 }
 
+interface IAppwriteDatabaseCollection<TCollectionNames extends string> {
+  id: string;
+  name: TCollectionNames;
+}
+
 interface IAppwriteDatabaseEnvVars<TCollectionNames extends string> {
   readonly id: string;
-  readonly collections: Map<TCollectionNames, string>;
+  readonly collections: Map<
+    TCollectionNames,
+    IAppwriteDatabaseCollection<TCollectionNames>
+  >;
 }
 
 const createAppwriteCollections = <TCollectionNames extends string>(
   collectionNames: TCollectionNames[]
-): Map<TCollectionNames, string> =>
+): Map<TCollectionNames, IAppwriteDatabaseCollection<TCollectionNames>> =>
   new Map(
     collectionNames.map((name) => [
       name,
-      getEnvironmentVariable(
-        `APPWRITE_${String(name).toUpperCase()}_COLLECTION_ID`
-      ),
+      {
+        id: getEnvironmentVariable(
+          `APPWRITE_${String(name).toUpperCase()}_COLLECTION_ID`
+        ),
+        name,
+      },
     ])
   );
 

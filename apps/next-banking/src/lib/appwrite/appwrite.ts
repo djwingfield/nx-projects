@@ -2,15 +2,14 @@
 
 import { cookies } from 'next/headers';
 import { Account, Client, Databases, Users } from 'node-appwrite';
+import { nextBankAppwriteEnvVars } from './helpers';
 
-export async function createSessionClient(
-  endpoint: string,
-  projectId: string,
-  sessionKey: string
-) {
-  const client = new Client().setEndpoint(endpoint).setProject(projectId);
+export async function createSessionClient() {
+  const client = new Client()
+    .setEndpoint(nextBankAppwriteEnvVars.endpoint)
+    .setProject(nextBankAppwriteEnvVars.projectId);
 
-  const session = cookies().get(sessionKey);
+  const session = cookies().get(nextBankAppwriteEnvVars.sessionKey);
   if (!session || !session.value) {
     throw new Error('No session');
   }
@@ -24,15 +23,11 @@ export async function createSessionClient(
   };
 }
 
-export async function createAdminClient(
-  endpoint: string,
-  projectId: string,
-  key: string
-) {
+export async function createAdminClient() {
   const client = new Client()
-    .setEndpoint(endpoint)
-    .setProject(projectId)
-    .setKey(key);
+    .setEndpoint(nextBankAppwriteEnvVars.endpoint)
+    .setProject(nextBankAppwriteEnvVars.projectId)
+    .setKey(nextBankAppwriteEnvVars.secret);
 
   return {
     get account() {
